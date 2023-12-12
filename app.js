@@ -1,6 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const db = require('./db/connect'); // Adjust the path accordingly
+const db = require('./db/connect');
 const app = express();
 const port = process.env.PORT || 3000;
 
