@@ -54,14 +54,8 @@ exports.changeTableName = async (req, res) => {
     try {
         const table = await Table.findByIdAndUpdate(
             tableId,
-            {
-                $set: {
-                    table: newName
-                }
-            },
-            {
-                new: true
-            }
+            { $set: { table: newName } },
+            { new: true }
         );
 
         if (!table) {
@@ -89,6 +83,46 @@ exports.deleteTable = async (req, res) => {
         return res.status(200).json({
             message: 'Delete table success',
             table: table,
+        });
+    } catch (error) {
+        console.error;
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+}
+
+exports.reserveTable = async (req, res) => {
+    try {
+        const tableId = req.body.id;
+        const clientName = req.body.clientName;
+        const clientTel = req.body.clientTel;
+
+        const updatedTable = await Table.findByIdAndUpdate(
+            tableId,
+            { $set: { status: 'pending', client_name: clientName, client_tel: clientTel } },
+            { new: true }
+        );
+
+        if (!updatedTable) {
+            return res.status(404).json({ message: 'Table not found' });
+        }
+
+        return res.status(200).json({
+            message: 'Table reserved successfully',
+            table: updatedTable,
+        });
+    } catch (error) {
+        console.error;
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+}
+
+exports.resetAllTables = async (req, res) => {
+    try {
+        const updatedTables = await Table.updateMany({}, { status: 'available', client_name: null, client_tel: null });
+
+        return res.status(200).json({
+            message: 'Reset all tables success',
+            updatedTables: updatedTables,
         });
     } catch (error) {
         console.error;
