@@ -1,4 +1,5 @@
 const Table = require('../models/table.model');
+const mongoose = require('mongoose');
 
 exports.createTable = async (req, res) => {
     try {
@@ -32,6 +33,10 @@ exports.getTable = async (req, res) => {
     try {
         const tableId = req.params.id;
 
+        if (!mongoose.Types.ObjectId.isValid(tableId) || !table) {
+            return res.status(400).json({ message: 'Invalid table ID' });
+        }
+
         const table = await Table.findById(tableId);
 
         if (!table) {
@@ -43,7 +48,7 @@ exports.getTable = async (req, res) => {
             table: table,
         });
     } catch (error) {
-        console.error;
+        console.error(error);
         return res.status(500).json({ message: 'Internal server error' })
     }
 }

@@ -19,6 +19,25 @@ module.exports = (app) => {
  * tags:
  *   name: Tables
  *   description: API operations for tables
+ * /table/{id}:
+ *   get:
+ *     summary: Get a table by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the table
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success response
+ *       400:
+ *         description: Bad request, invalid ID
+ *       404:
+ *         description: Table not found
+ *       500:
+ *         description: Internal server error
  * /tables:
  *   get:
  *     summary: Get all items

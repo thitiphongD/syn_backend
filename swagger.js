@@ -6,7 +6,7 @@ const swaggerOptions = {
         info: {
             title: 'API Documentation',
             version: '1.0.0',
-            description: 'Daew Test Swagger',
+            description: 'Test Swagger',
         },
         servers: [
             {
