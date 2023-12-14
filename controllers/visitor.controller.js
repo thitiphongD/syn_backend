@@ -1,5 +1,4 @@
 const Visitor = require('../models/visitor.model');
-const mongoose = require('mongoose');
 
 exports.visitor = async (req, res) => {
     try {
@@ -25,10 +24,13 @@ exports.visitor = async (req, res) => {
 
 exports.countVisitor = async (req, res) => {
     try {
+        const allVisitors = await Visitor.find({});
+
         const visitorCount = await Visitor.countDocuments({});
         return res.status(200).json({
             message: 'Visitor count retrieved successfully',
             visitorCount: visitorCount,
+            visitors: allVisitors
         });
     } catch (error) {
         console.error(error);
@@ -62,3 +64,73 @@ exports.getVisitorOneDate = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+exports.selectByDevice = async (req, res) => {
+    const device = req.params.device;
+    try {
+        const visitorDevices = await Visitor.find({ device: device });
+        const visitorCount = await Visitor.countDocuments({
+            device: device,
+        });
+
+        return res.status(200).json({
+            message: `Visitors retrieved successfully by ${device}`,
+            visitorCount: visitorCount,
+            visitors: visitorDevices,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.selectByBrowser = async (req, res) => {
+    const browser = req.params.browser;
+    try {
+        const visitorBrowser = await Visitor.find({ browser: browser });
+
+        const visitorCount = await Visitor.countDocuments({
+            browser: browser,
+        });
+
+        return res.status(200).json({
+            message: `Visitors retrieved successfully by ${browser}`,
+            visitorCount: visitorCount,
+            visitors: visitorBrowser,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.selectBetweenTime = async (req, res) => {
+    const startTime = req.params.startTime;
+    const endTime = req.params.endTime;
+
+    try {
+        const visitorsBetweenTime = await Visitor.find({
+            accessedAt: {
+                $gte: new Date(startTime),
+                $lte: new Date(endTime),
+            },
+        });
+
+        const visitorCount = await Visitor.countDocuments({
+            accessedAt: {
+                $gte: new Date(startTime),
+                $lte: new Date(endTime),
+            },
+        });
+
+        return res.status(200).json({
+            message: `Visitors retrieved successfully between ${startTime} and ${endTime}`,
+            visitorCount: visitorCount,
+            visitors: visitorsBetweenTime,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
