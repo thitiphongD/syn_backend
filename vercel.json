@@ -2,14 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.js",
+      "src": "routes/**/*.js",
       "use": "@now/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "routes/(.*)",
-      "dest": "app.js"
     }
   ]
 }
