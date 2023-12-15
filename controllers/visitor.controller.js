@@ -134,3 +134,22 @@ exports.selectBetweenTime = async (req, res) => {
     }
 };
 
+exports.deleteVisitor = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const visitor = await Visitor.findByIdAndDelete(id);
+
+        if (!visitor) {
+            return res.status(404).json({ message: 'Visitor not found' });
+        }
+
+        return res.status(200).json({
+            message: 'Delete visitor success',
+            visitor: visitor,
+        });
+    } catch (error) {
+        console.error;
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+}
+
