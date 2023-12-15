@@ -5,10 +5,8 @@ const app = express();
 const db = require('./db/connect');
 
 const healthCheck = require('./routes/healthcheck.route');
-const user = require('./routes/user.route');
 const table = require('./routes/table.route');
 const visitor = require('./routes/visitor.route');
-
 
 require("dotenv").config();
 app.use(express.json());
@@ -17,17 +15,20 @@ app.use(morgan('dev'));
 app.disable('x-powered-by');
 
 healthCheck(app);
-user(app);
 table(app);
 visitor(app);
+
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcome to backend API' })
+});
 
 app.get('*', (req, res) => {
     res.status(404).json({ message: '404 page not found' })
 })
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
-module.exports = app;
-// app.listen(port, () => {
-//     console.log(`Server listening on port ${port}`)
-// })
+// module.exports = app;
+app.listen(port, () => {
+    console.log(`[INFO] Server listening on port ${port}`)
+})
