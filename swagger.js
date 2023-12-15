@@ -6,7 +6,7 @@ const swaggerOptions = {
         info: {
             title: 'API Documentation',
             version: '1.0.0',
-            description: 'Test Swagger',
+            description: 'Synerry Swagger',
         },
         servers: [
             {
@@ -14,7 +14,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['routes/*.js'], // Point to the folder where your route files are located
+    apis: ['routes/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
