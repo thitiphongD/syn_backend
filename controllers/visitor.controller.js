@@ -148,7 +148,7 @@ exports.deleteVisitor = async (req, res) => {
             visitor: visitor,
         });
     } catch (error) {
-        console.error;
+        console.error(error);
         return res.status(500).json({ message: 'Internal server error' })
     }
 }
